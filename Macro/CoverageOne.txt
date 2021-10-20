@@ -1,0 +1,38 @@
+run("Split Channels");
+selectImage(1);
+rename("red");
+selectImage(2);
+rename("green");
+selectImage(3);
+rename("blue");
+imageCalculator("Subtract create", "green","blue");
+rename("green-blue");
+imageCalculator("Subtract create", "green","red");
+rename("green-red");
+imageCalculator("Add create", "green-blue","green-red");
+rename("target");
+setAutoThreshold("Default");
+run("Threshold", "thresholded remaining black");
+run("Invert");
+run("Analyze Particles...", "size=100-Infinity summarize  show=Nothing");
+IJ.renameResults ("Summary", "Results");
+TA=getResult ("Total Area",0);
+Width=getWidth();
+Height=getHeight();
+Cover=TA/(Width*Height)*100;
+print (Cover);
+run("Clear Results");
+
+selectImage("red");
+close();
+selectImage("green");
+close();
+selectImage("blue");
+close();
+selectImage("green-blue");
+close();
+selectImage("green-red");
+close();
+selectWindow("Results");
+run("Close");
+
